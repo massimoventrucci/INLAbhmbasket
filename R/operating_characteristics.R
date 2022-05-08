@@ -93,23 +93,23 @@ operating_char = function(data, m, N, p_true,
 }
 
 # # problema; funziona solo con m=4
-# find_cutoff <- function(res,
-#                         p_null,
-#                         prob_cutoff = 0.9,
-#                         desired_alpha = 0.1,
-#                         tol=0.05){
-#   n <- length(res)
-#   rej.prob1 <- rej.prob2 <- rej.prob3 <- rej.prob4  <- rep(1, n)
-#   while(sum(abs(c(mean(rej.prob1), mean(rej.prob2), mean(rej.prob3), mean(rej.prob4)) - desired_alpha) <= tol) < 4){
-#     prob_cutoff <- prob_cutoff-0.001
-#     for(i in 1:n) {
-#       rej.prob1[i] <- (1-inla.pmarginal(p_null, res[[i]]$post.par[[1]])) >= prob_cutoff
-#       rej.prob2[i] <- (1-inla.pmarginal(p_null, res[[i]]$post.par[[2]])) >= prob_cutoff
-#       rej.prob3[i] <- (1-inla.pmarginal(p_null, res[[i]]$post.par[[3]])) >= prob_cutoff
-#       rej.prob4[i] <- (1-inla.pmarginal(p_null, res[[i]]$post.par[[4]])) >= prob_cutoff
-#     }
-#     print(c(prob_cutoff, mean(rej.prob1), mean(rej.prob2), mean(rej.prob3), mean(rej.prob4)))
-#   }
-#
-# }
+find_cutoff <- function(res,
+                        p_null,
+                        prob_cutoff = 0.9,
+                        desired_alpha = 0.1,
+                        tol=0.05){
+  n <- length(res)
+  rej.prob1 <- rej.prob2 <- rej.prob3 <- rej.prob4  <- rep(1, n)
+  while(sum(abs(c(mean(rej.prob1), mean(rej.prob2), mean(rej.prob3), mean(rej.prob4)) - desired_alpha) <= tol) < 4){
+    prob_cutoff <- prob_cutoff-0.001
+    for(i in 1:n) {
+      rej.prob1[i] <- (1-inla.pmarginal(p_null, res[[i]]$post.par[[1]])) >= prob_cutoff
+      rej.prob2[i] <- (1-inla.pmarginal(p_null, res[[i]]$post.par[[2]])) >= prob_cutoff
+      rej.prob3[i] <- (1-inla.pmarginal(p_null, res[[i]]$post.par[[3]])) >= prob_cutoff
+      rej.prob4[i] <- (1-inla.pmarginal(p_null, res[[i]]$post.par[[4]])) >= prob_cutoff
+    }
+    print(c(prob_cutoff, mean(rej.prob1), mean(rej.prob2), mean(rej.prob3), mean(rej.prob4)))
+  }
+
+}
 
