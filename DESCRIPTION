@@ -1,0 +1,15 @@
+Package: INLAbhmbasket
+Type: Package
+Title: Simulate the operating characteristics of a basket trial via Bayesian Hierarchical Modelling (BHM) using INLA
+Version: 0.1.0
+Author: c(
+  person(given = "Massimo", family = "Ventrucci", email = "massimo.ventrucci@unibo.it", role = c("aut", "cre")),
+  person(given = "Alessandro", family = "Vagheggini", email = "alessandro.vagheggini@msd.com", role = c("aut")))
+Maintainer: Massimo Ventrucci <massimo.ventrucci@unibo.it>
+Description: This package contains functions to bla bla bla...
+License: GPL
+Encoding: UTF-8
+Depends: R (>= 4.1.0)
+Suggests: INLA
+Imports: actuar, pbapply
+LazyData: true
