@@ -1,4 +1,4 @@
-#sim: number of simulated trials
+#nsim: number of simulated trials
 #m: number of cohorts
 #N: max number of patients enrolled per arm  (same for each arm)
 #p_true: response rate for generating the data
@@ -21,7 +21,7 @@
 #parameters: prior distribution's parameters
 ### da documentare; TO DO
 
-sim_basket = function(sim, m, N, p_true,
+sim_basket = function(nsim, m, N, p_true,
                       p_null, p_target,
                       ia1_fraction = 0.4, step = 0.5,
                       futility_threshold = 0.05,
@@ -32,7 +32,7 @@ sim_basket = function(sim, m, N, p_true,
   #options for the progress bar
   op = pbapply:::pboptions(type = "timer")
 
-  tmp = pbapply:::pblapply(1:sim, function(xx) {
+  tmp = pbapply:::pblapply(1:nsim, function(xx) {
     #require(INLA)
     # source('BHM_basket.R')
     # source('EPC.R')
@@ -64,7 +64,7 @@ sim_basket = function(sim, m, N, p_true,
     st.dev = INLA:::inla.tmarginal(function(x) {1 / sqrt(exp(x))}, inla.mod$internal.marginals.hyperpar[[1]])
 
     #posterior probability
-    post.prob = 1 - posterior_probability(data = inla.mod, x = mean(p_null, p_target))
+    post.prob = 1 - posterior_probability(inla.out = inla.mod, x = mean(p_null, p_target))
 
     #first interim analyses
     stop = as.matrix(sapply(post.prob, function(x) {
@@ -170,7 +170,11 @@ sim_basket = function(sim, m, N, p_true,
     rownames(patients$ia_accruals) = paste("arm", LETTERS[1:m])
 
     #returing data
-    return(list(stop = as.matrix(stop[, 1:(jj - 2)]), post.par = post, post.hyper = st.dev, accruals = as.matrix(patients$ia_accruals[, 1:(jj - 1)]), successes = successes))
+    return(list(stop = as.matrix(stop[, 1:(jj - 2)]),
+                post.par = post,
+                post.hyper = st.dev,
+                accruals = as.matrix(patients$ia_accruals[, 1:(jj - 1)]),
+                successes = successes))
   })
 
   #"close" the options

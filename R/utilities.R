@@ -144,7 +144,7 @@ trial = function(m, N, p_true, ia1_fraction) {
 # }
 
 
-#data: a two-column dataframe with the number of positive responses in the first column and number of patients enrolled in each cohort in the second column; each row represents a cohort
+#sim.data: a two-column dataframe with the number of positive responses in the first column and number of patients enrolled in each cohort in the second column; each row represents a cohort
 #p_null: the null hypothesis uninteresting threshold
 #p_target: the alternative hypothesis target threshold
 #prior: prior distribution for the random term parameter handling the borrowing of information:
@@ -153,7 +153,7 @@ trial = function(m, N, p_true, ia1_fraction) {
 #   - uniform (a, b) on the standard deviation; when the number of subgroups is >= 5
 #   - PC(sd_x) prior; for the EPC please use the EPC_sd function to compute the desired sd_x value
 
-BHM_basket = function(data, p_null, p_target, prior, parameters) {
+BHM_basket = function(sim.data, p_null, p_target, prior, parameters) {
   #loading INLA package
   # require(INLA)
 
@@ -163,17 +163,17 @@ BHM_basket = function(data, p_null, p_target, prior, parameters) {
   # source("log_uniform_precision.R")
 
   #checks on the dataframe
-  if (class(data) != "data.frame") {
+  if (class(sim.data) != "data.frame") {
     stop("Only data.frames allowed")
   }
 
   #checks on the dataframe dimensions
-  if (ncol(data) != 2) {
+  if (ncol(sim.data) != 2) {
     stop("Wrong number of variables")
   }
 
   #checks on the dataframe values
-  if (sum(data[, 1] > data[, 2]) != 0) {
+  if (sum(sim.data[, 1] > sim.data[, 2]) != 0) {
     stop("The number of positive responses cannot be grater than the number of patients enrolled")
   }
 
@@ -208,9 +208,9 @@ BHM_basket = function(data, p_null, p_target, prior, parameters) {
                                                        list(initial = 0,
                                                             prior = "pc.prec",
                                                             param = c(prior_param[[1]] / 0.31, 0.01)))),
-                              data = list(y = data[, 1], x = 1:nrow(data)),
+                              data = list(y = sim.data[, 1], x = 1:nrow(sim.data)),
                               family = "binomial",
-                              Ntrials = data[, 2], #histologies' sample size
+                              Ntrials = sim.data[, 2], #histologies' sample size
                               offset = logit(p_target), #offset to be included (see BHMDesign.R)
                               control.fixed = list(mean.intercept = mu_par, prec.intercept = 1 / 100), #prior for the intercept
                               ### THINK about it! do we need correct=TRUE; it was giving an error when using it...
@@ -246,9 +246,9 @@ BHM_basket = function(data, p_null, p_target, prior, parameters) {
     inla_output = INLA:::inla(y ~ 1 + f(x,
                                         model = "iid",
                                         hyper = half_t_prior),
-                              data = list(y = data[, 1], x = 1:nrow(data)),
+                              data = list(y = sim.data[, 1], x = 1:nrow(sim.data)),
                               family = "binomial",
-                              Ntrials = data[, 2], #histologies' sample size
+                              Ntrials = sim.data[, 2], #histologies' sample size
                               offset = logit(p_target), #offset to be included (see BHMDesign.R)
                               control.fixed = list(mean.intercept = mu_par, prec.intercept = 1 / 100), #prior for the intercept
                               ### THINK about it! do we need correct=TRUE; it was giving an error when using it...
@@ -286,9 +286,9 @@ BHM_basket = function(data, p_null, p_target, prior, parameters) {
     inla_output = INLA:::inla(y ~ 1 + f(x,
                                         model = "iid",
                                         hyper = list(prec = list(prior = unif_prior_table))),
-                              data = list(y = data[, 1], x = 1:nrow(data)),
+                              data = list(y = sim.data[, 1], x = 1:nrow(sim.data)),
                               family = "binomial",
-                              Ntrials = data[, 2], #histologies' sample size
+                              Ntrials = sim.data[, 2], #histologies' sample size
                               offset = logit(p_target), #offset to be included (see BHMDesign.R)
                               control.fixed = list(mean.intercept = mu_par, prec.intercept = 1 / 100), #prior for the intercept
                               ### THINK about it! do we need correct=TRUE; it was giving an error when using it...
@@ -318,9 +318,9 @@ BHM_basket = function(data, p_null, p_target, prior, parameters) {
                                                             prior = "loggamma",
                                                             param = c(prior_param[[1]],
                                                                       prior_param[[2]])))),
-                              data = list(y = data[, 1], x = 1:nrow(data)),
+                              data = list(y = sim.data[, 1], x = 1:nrow(sim.data)),
                               family = "binomial",
-                              Ntrials = data[, 2], #histologies' sample size
+                              Ntrials = sim.data[, 2], #histologies' sample size
                               offset = logit(p_target), #offset to be included (see BHMDesign.R)
                               control.fixed = list(mean.intercept = mu_par, prec.intercept = 1 / 100), #prior for the intercept
                               ### THINK about it! do we need correct=TRUE; it was giving an error when using it...
