@@ -5,10 +5,10 @@
 \alias{sim_basket}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-bla%%  ~~function to do ... ~~
+Simulate a basket trial under several study design choices and priors on the arm-level variance
 }
 \description{
-MANUAL IN PROGRESS; Simulate a basket trial under several study design choices and priors on the arm-level variance}
+MANUAL IN PROGRESS; ...}
 \usage{
 sim_basket(nsim, m, N, p_true, p_null, p_target, ia1_fraction = 0.4, step = 0.5, futility_threshold = 0.05, efficacy_threshold = 0.9, prior, parameters)
 }
