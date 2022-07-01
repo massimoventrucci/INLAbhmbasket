@@ -8,49 +8,53 @@
 bla%%  ~~function to do ... ~~
 }
 \description{
-bla%%  ~~ A concise (1-5 lines) description of what the function does. ~~
-}
+Simulate a basket trial under several study design choices and priors on the arm-level variance}
 \usage{
-sim_basket(sim, m, N, p_true, p_null, p_target, ia1_fraction = 0.4, step = 0.5, futility_threshold = 0.05, efficacy_threshold = 0.9, prior, parameters)
+sim_basket(nsim, m, N, p_true, p_null, p_target, ia1_fraction = 0.4, step = 0.5, futility_threshold = 0.05, efficacy_threshold = 0.9, prior, parameters)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{sim}{
-bla%%     ~~Describe \code{sim} here~~
+  \item{nsim}{
+number of simulated trials
 }
   \item{m}{
-bla%%     ~~Describe \code{m} here~~
+number of arms
 }
   \item{N}{
-bla%%     ~~Describe \code{N} here~~
+max number of patients enrolled per arm  (same for each arm)
 }
   \item{p_true}{
-bla%%     ~~Describe \code{p_true} here~~
+a vector of length \texttt{m} with response rate for generating the data in each arm
 }
   \item{p_null}{
-bla%%     ~~Describe \code{p_null} here~~
+the null hypothesis uninteresting threshold (efficacy rate under H0)
 }
   \item{p_target}{
-bla%%     ~~Describe \code{p_target} here~~
+the alternative hypothesis target threshold (efficacy rate under H1)
 }
   \item{ia1_fraction}{
-bla%%     ~~Describe \code{ia1_fraction} here~~
+a fraction of N at which the 1st interim analysis (IA) takes place; default 0.4
 }
   \item{step}{
-bla%%     ~~Describe \code{step} here~~
+define subsequent IAs' timing as an increment of the patients enrolled at the 1st IA; default 0.5
 }
   \item{futility_threshold}{
-bla%%     ~~Describe \code{futility_threshold} here~~
+response rate at which the arm can be closed based on futility; default 0.05
 }
   \item{efficacy_threshold}{
-bla%%     ~~Describe \code{efficacy_threshold} here~~
+response rate at which the arm can be closed based on efficacy; default 0.9
 }
   \item{prior}{
-bla%%     ~~Describe \code{prior} here~~
+prior distribution for the arm-level variance, choices are:
+\begin{itemize}
+\item Gamma(a, b) on the precision;
+\item half-t(gamma, ni) on the standard deviation (\texttt{half-t}); \item uniform (a, b) on the standard deviation;
+\item PC(sd_x) prior (\texttt{PC});
+\item EPC (please use the EPC_sd function to compute the desired sd_x value, TODO...);
+\end{itemize}
 }
-  \item{parameters}{
-bla%%     ~~Describe \code{parameters} here~~
-}
+\item{parameters}{
+parameters of the prior distrinution on the arm-level variance}
 }
 \details{
 bla%%  ~~ If necessary, more details than the description above ~~
